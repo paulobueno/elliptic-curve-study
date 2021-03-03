@@ -27,7 +27,9 @@ class EllipticCurve:
             result = n%self.modulus
         else:
             result = None
-            for i in range(100000):
+            loop = range(1000000000)
+            for i in loop:
+                print(i, 'of', loop, end='\r')
                 if n*i%self.modulus == 1:
                     result = i
                     break
@@ -91,8 +93,9 @@ class EllipticCurve:
 class BitcoinKeys(EllipticCurve):
     a = 0
     b = 7
-    G = (1,9)
-    P = 17
+    G = (0x79be667ef9dcbbac55a06295ce870b07029bfcdb2dce28d959f2815b16f81798,
+       0x483ada7726a3c4655da4fbfc0e1108a8fd17b448a68554199c47d08ffb10d4b8)
+    P = 2**256 - 2**32 - 2**9 - 2**8 - 2**7 - 2**6 - 2**4 - 1
 
     def __init__(self):
         self.private_key = None
@@ -117,9 +120,7 @@ class BitcoinKeys(EllipticCurve):
         
 
 if __name__=='__main__':
-    a = EllipticCurve(2,2)
-    a.set_generator_point(5,1)
-    a.set_modulus(17)
-    for i in range(1,30):
-        result = a.get_gtimes_point(i)
-        print(f'G{i}: {result}')
+    a = BitcoinKeys()
+    a.set_private_key(100)
+    print(a.gen_public_key())
+    print(a.get_public_key())
