@@ -9,3 +9,4 @@ Other references:<br>
 - <a href='https://www.youtube.com/watch?v=F3zzNa42-tQ'>Elliptic Curve Diffie Hellman</a><br>
 - <a href='https://www.youtube.com/watch?v=NF1pwjL9-DE'>Elliptic Curves - Computerphile</a><br>
 - <a href='https://www.khanacademy.org/computing/computer-science/cryptography/modarithmetic/a/modular-inverses'>Modular inverses</a><br>
+- <a href='https://cryptobook.nakov.com/asymmetric-key-ciphers/elliptic-curve-cryptography-ecc'>Practical Cryptography for Developers</a><br>

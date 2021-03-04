@@ -27,9 +27,9 @@ class EllipticCurve:
             result = n%self.modulus
         else:
             result = None
-            loop = range(1000000000)
+            loop = range(100000)
             for i in loop:
-                print(i, 'of', loop, end='\r')
+               # print(i, 'of', loop, end='\r')
                 if n*i%self.modulus == 1:
                     result = i
                     break
@@ -74,20 +74,21 @@ class EllipticCurve:
                 y2 = y2%self.modulus
         return (x2,y2)
 
-    def get_gtimes_point(self,n):
+    def get_gtimes_points(self,n):
+        results_list = [self.g]
         if n<=0:
             raise Exception('N must be greater than 0')
         else:
-            result = self.g
             for _ in range(1,n):
+                point=results_list[-1]
                 if _ == 1: 
-                    result = self.get_next_gpoint(result,is_double=True)
+                    results_list.append(self.get_next_gpoint(point,is_double=True))
+                elif point == (None, None):
+                    point=results_list[int(n/2)-1]
+                    results_list.append(self.get_next_gpoint(point,is_double=True))
                 else: 
-                    result = self.get_next_gpoint(result)
-                if result == (None, None):
-                    result = 'Reached infinity point'
-                    break
-        return result
+                    results_list.append(self.get_next_gpoint(point))
+        return results_list
 
 
 class BitcoinKeys(EllipticCurve):
@@ -110,7 +111,7 @@ class BitcoinKeys(EllipticCurve):
 
     def gen_public_key(self):
         prk = self.private_key
-        self.public_key = self.get_gtimes_point(prk)
+        self.public_key = self.get_gtimes_points(prk)
         return self.public_key
 
     def get_public_key(self):
@@ -120,7 +121,7 @@ class BitcoinKeys(EllipticCurve):
         
 
 if __name__=='__main__':
-    a = BitcoinKeys()
-    a.set_private_key(100)
-    print(a.gen_public_key())
-    print(a.get_public_key())
+    a = EllipticCurve(0,7)
+    a.set_generator_point(15,13)
+    a.set_modulus(17)
+    print(a.get_gtimes_points(20))
